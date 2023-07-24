@@ -1,0 +1,32 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "There are no variables"
+  #parameter-store:
+     # key: "There are no variables"
+
+phases:
+  pre_build:
+    commands:
+      - echo '============== START Pre_build ============='
+      - echo Login to ECR
+      - $( aws ecr get-login --no-include-email --region  eu-west-3)
+      # |  docker login --username AWS --password-stdin 922251158503.dkr.ecr.eu-west-3.amazonaws.com
+    finally:
+      - echo '=============== END Pre_build =============='
+  build:
+    commands:
+      - echo '================ START Build ==============='
+      - echo Building image
+      - docker build -t mlflow-service:latest .
+      - docker tag mlflow-service:latest 922251158503.dkr.ecr.eu-west-3.amazonaws.com/mlflow-service:latest
+    finally:
+      - echo '================= END Build ================'
+  post_build:
+    commands:
+      - echo '============== START Post_build ============='
+      - echo Pushing to ECR
+      - docker push  922251158503.dkr.ecr.eu-west-3.amazonaws.com/mlflow-service:latest
+    finally:
+      - echo '=============== END Post_build =============='
