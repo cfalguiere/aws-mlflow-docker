@@ -4,7 +4,7 @@ LABEL maintainer "EIP"
 
 RUN mkdir /mlflow/
 
-RUN pip install mlflow
+RUN python -m pip install --upgrade pip' && pip install mlflow
 
 EXPOSE 5000
 
