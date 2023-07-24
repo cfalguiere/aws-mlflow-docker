@@ -10,8 +10,8 @@ phases:
   pre_build:
     commands:
       - echo '============== START Pre_build ============='
-      - echo Login to ECR
-      - $( aws ecr get-login-password --region  eu-west-3 )
+      #- echo Login to ECR
+      #- $( aws ecr get-login-password --region  eu-west-3 )
       # |  docker login --username AWS --password-stdin ${account_id}.dkr.ecr.eu-west-3.amazonaws.com
     finally:
       - echo '=============== END Pre_build =============='
