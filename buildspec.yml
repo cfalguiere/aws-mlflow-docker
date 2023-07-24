@@ -1,8 +1,8 @@
 version: 0.2
 
-#env:
-  #variables:
-     # key: "There are no variables"
+env:
+  variables:
+     account_id: $( aws sts get-caller-identity --query "Account" --output text )
   #parameter-store:
      # key: "There are no variables"
 
@@ -11,16 +11,16 @@ phases:
     commands:
       - echo '============== START Pre_build ============='
       - echo Login to ECR
-      - $( aws ecr get-login-password --no-include-email --region  eu-west-3)
-      # |  docker login --username AWS --password-stdin 922251158503.dkr.ecr.eu-west-3.amazonaws.com
+      - $( aws ecr get-login-password --region  eu-west-3 )
+      # |  docker login --username AWS --password-stdin ${account_id}.dkr.ecr.eu-west-3.amazonaws.com
     finally:
       - echo '=============== END Pre_build =============='
   build:
     commands:
       - echo '================ START Build ==============='
       - echo Building image
-      - docker build -t mlflow-service:latest .
-      - docker tag mlflow-service:latest 922251158503.dkr.ecr.eu-west-3.amazonaws.com/mlflow-service:latest
+      - docker build -t mlflow:latest .
+      - docker tag mlflow-service:latest ${account_id}.dkr.ecr.eu-west-3.amazonaws.com/mlflow:latest
     finally:
       - echo '================= END Build ================'
   post_build:
