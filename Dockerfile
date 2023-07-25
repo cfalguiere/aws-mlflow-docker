@@ -4,7 +4,7 @@ LABEL maintainer "EIP"
 
 RUN mkdir /mlflow/
 
-RUN pip install --upgrade pip && pip install mlflow
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir mlflow==2.5.0
 
 EXPOSE 5000
 
