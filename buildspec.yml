@@ -41,9 +41,9 @@ phases:
       - echo 'Building the Docker image...'     
       - export URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
       - export LABEL="${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-      - echo "LABEL=${_LABEL}"
+      - echo "LABEL=${LABEL}"
       - docker build --tag ${LABEL}  .
-      - docker tag ${IMAGE_LABEL} ${URI}/${LABEL}   
+      - docker tag ${LABEL} ${URI}/${LABEL}   
     finally:
       - echo '================= END Build ================'
   post_build:
