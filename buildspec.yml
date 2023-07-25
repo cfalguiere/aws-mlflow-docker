@@ -28,7 +28,7 @@ phases:
     commands:
       - echo '============== START Pre_build ============='
       - echo 'Logging in to Amazon ECR...'
-      - echo ""REPO_URI=${REPO_URI}"
+      - echo "REPO_URI=${REPO_URI}"
       - aws ecr get-login-password --region ${AWS_DEFAULT_REGION}  docker login --username AWS --password-stdin ${REPO_URI}
     finally:
       - echo '=============== END Pre_build =============='
@@ -38,7 +38,7 @@ phases:
       - echo 'Building image'
       - echo 'Build started on `date`'
       - echo 'Building the Docker image...'     
-      - echo ""IMAGE_LABEL=${IMAGE_LABEL}"
+      - echo "IMAGE_LABEL=${IMAGE_LABEL}"
       - docker build --tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} .
       - docker tag ${IMAGE_LABEL} ${REPO_URI}/${IMAGE_LABEL}   
     finally:
