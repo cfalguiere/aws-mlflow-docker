@@ -10,9 +10,6 @@ phases:
     commands:
       - echo '============== START Pre_build ============='
       - echo 'Logging in to Amazon ECR...'
-      - export URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-      - echo "URI=${URI}"
-      - echo "IMAGE_TAG=${IMAGE_TAG}"
       - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${URI}- aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.comlly:
       - echo '=============== END Pre_build =============='
   build:
@@ -21,9 +18,6 @@ phases:
       - echo 'Building image'
       - echo 'Build started on `date`'
       - echo 'Building the Docker image...'     
-      - export URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-      #- export LABEL="${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-      #- echo "LABEL=${LABEL}"
       - docker build --tag $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
     finally:
