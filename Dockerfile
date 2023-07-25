@@ -6,7 +6,7 @@ RUN mkdir /mlflow/
 
 RUN pip install --no-cache-dir --upgrade pip && pip install mlflow==2.5.0
 
-EXPOSE 5000s
+EXPOSE 5000
 
 CMD mlflow server \
   --backend-store-uri ./mlruns  \
