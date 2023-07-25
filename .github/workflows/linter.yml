@@ -6,6 +6,8 @@
 #################################
 name: Lint Code Base
 
+# https://github.com/super-linter/super-linter
+
 #############################
 # Start the job on all push #
 #############################
