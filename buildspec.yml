@@ -43,7 +43,7 @@ phases:
       - export LABEL="${IMAGE_REPO_NAME}:${IMAGE_TAG}"
       - echo "LABEL=${LABEL}"
       - docker build --tag ${LABEL}  .
-      - docker tag ${LABEL} ${URI}/${LABEL}   
+      - docker tag ${LABEL} "${URI}/${LABEL}"" 
     finally:
       - echo '================= END Build ================'
   post_build:
@@ -53,7 +53,7 @@ phases:
       - echo 'Pushing the Docker image...'
       - export URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
       - export LABEL="${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-      - docker push ${URI}/${LABEL}
+      - docker push "${URI}/${LABEL}"
       - echo 'Creating the image definition file'
       - printf '[{"name":"mlflow-service","imageUri":"%s"}]' ${LABEL} > imagedefinitions.json
     finally:
