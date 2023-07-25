@@ -30,7 +30,7 @@ phases:
       - echo 'Logging in to Amazon ECR...'
       - export URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
       - echo "URI=${URI}"
-      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION}  docker login --username AWS --password-stdin ${URI}
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${URI}
     finally:
       - echo '=============== END Pre_build =============='
   build:
