@@ -4,9 +4,9 @@ LABEL maintainer "EIP"
 
 RUN mkdir /mlflow/
 
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir mlflow==2.5.0
+RUN pip install --no-cache-dir --upgrade pip && pip install mlflow==2.5.0
 
-EXPOSE 5000
+EXPOSE 5000s
 
 CMD mlflow server \
   --backend-store-uri ./mlruns  \
