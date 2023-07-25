@@ -7,7 +7,8 @@ version: 0.2
 env:
   #shell: shell-tag
   variables:
-    REPO_URI:"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+    REPO_URI: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+    IMAGE_LABEL: "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
     #key: "value"
     #key: "value"
   #parameter-store:
@@ -26,7 +27,6 @@ phases:
     commands:
       - echo '============== START Pre_build ============='
       - echo 'Logging in to Amazon ECR...'
-      #- export REPO_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
       - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} \
         | docker login --username AWS --password-stdin ${REPO_URI}
     finally:
@@ -37,8 +37,6 @@ phases:
       - echo 'Building image'
       - echo 'Build started on `date`'
       - echo 'Building the Docker image...'     
-      #- export REPO_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-      - export IMAGE_LABEL=${IMAGE_REPO_NAME}:${IMAGE_TAG}
       - docker build --tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} .
       - docker tag ${IMAGE_LABEL} ${REPO_URI}/${IMAGE_LABEL}   
     finally:
@@ -48,8 +46,6 @@ phases:
       - echo '============== START Post_build ============='
       - echo Build completed on `date`
       - echo 'Pushing the Docker image...'
-      #- export REPO_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-      - export IMAGE_LABEL=${IMAGE_REPO_NAME}:${IMAGE_TAG}
       - docker push ${REPO_URI}/${IMAGE_LABEL}
       - echo 'Creating the image definition file'
       - printf '[{"name":"mlflow-service","imageUri":"%s"}]' ${IMAGE_LABEL} > imagedefinitions.json
