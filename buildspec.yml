@@ -29,7 +29,8 @@ phases:
       - echo '============== START Pre_build ============='
       - echo 'Logging in to Amazon ECR...'
       - echo "REPO_URI=${REPO_URI}"
-      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION}  docker login --username AWS --password-stdin ${REPO_URI}
+      - export URI=$(eval $REPO_URI)
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION}  docker login --username AWS --password-stdin ${URI}
     finally:
       - echo '=============== END Pre_build =============='
   build:
@@ -39,8 +40,10 @@ phases:
       - echo 'Build started on `date`'
       - echo 'Building the Docker image...'     
       - echo "IMAGE_LABEL=${IMAGE_LABEL}"
-      - docker build --tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} .
-      - docker tag ${IMAGE_LABEL} ${REPO_URI}/${IMAGE_LABEL}   
+      - export URI=$(eval $REPO_URI)
+      - export LABEL=$(eval $IMAGE_LABEL)
+      - docker build --tag ${LABEL}  .
+      - docker tag ${IMAGE_LABEL} ${URI}/${LABEL}   
     finally:
       - echo '================= END Build ================'
   post_build:
@@ -48,9 +51,12 @@ phases:
       - echo '============== START Post_build ============='
       - echo Build completed on `date`
       - echo 'Pushing the Docker image...'
-      - docker push ${REPO_URI}/${IMAGE_LABEL}
+      - export URI=$(eval $REPO_URI)
+      - export URI=$(eval $REPO_URI)
+      - export LABEL=$(eval $IMAGE_LABEL)
+      - docker push ${URI}/${LABEL}
       - echo 'Creating the image definition file'
-      - printf '[{"name":"mlflow-service","imageUri":"%s"}]' ${IMAGE_LABEL} > imagedefinitions.json
+      - printf '[{"name":"mlflow-service","imageUri":"%s"}]' ${LABEL} > imagedefinitions.json
     finally:
       - echo '=============== END Post_build =============='
 
